@@ -31,12 +31,14 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
 
       - name: Create debug keystore
         run: bash .github/scripts/make-signing.sh
 
       - name: Build Debug APK
-        run: ./gradlew :manager:assembleDebug --no-daemon
+        run: ./gradlew :manager:assembleDebug --no-daemon --no-build-cache
 
       - name: Upload Debug APK
         if: success()
@@ -46,10 +48,12 @@ jobs:
           path: manager/build/outputs/apk/debug/manager-debug.apk
           if-no-files-found: warn
 
-      - name: Upload build problem reports
+      - name: Upload build reports on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: build-problem-reports
-          path: build/reports/problems/
+          name: build-reports
+          path: |
+            build/reports/
+            /home/runner/work/_temp/.gradle-actions/
           if-no-files-found: ignore
