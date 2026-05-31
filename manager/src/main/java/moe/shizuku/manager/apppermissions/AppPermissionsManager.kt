@@ -88,7 +88,7 @@ object AppPermissionsManager {
     private fun runShell(vararg command: String): String {
         val service = IShizukuService.Stub.asInterface(Shizuku.getBinder())
         val process = service.newProcess(command, null, null)
-        val output = process.inputStream.bufferedReader().use { it.readText() }
+        val output = (process.inputStream as java.io.InputStream).bufferedReader().use { it.readText() }
         process.waitFor()
         return output
     }
