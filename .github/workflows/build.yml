@@ -32,15 +32,24 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Create debug keystore and signing.properties
+      - name: Create debug keystore
         run: bash .github/scripts/make-signing.sh
 
       - name: Build Debug APK
         run: ./gradlew :manager:assembleDebug --no-daemon
 
       - name: Upload Debug APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: shizuku-manager-debug
           path: manager/build/outputs/apk/debug/manager-debug.apk
           if-no-files-found: warn
+
+      - name: Upload build problem reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-problem-reports
+          path: build/reports/problems/
+          if-no-files-found: ignore
