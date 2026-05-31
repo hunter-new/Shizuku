@@ -86,6 +86,12 @@
             android:name=".management.ClipboardManagementActivity"
             android:label="@string/home_clipboard_management_title" />
         <activity
+            android:name=".apppermissions.AppPermissionsActivity"
+            android:label="@string/app_permissions_title" />
+        <activity
+            android:name=".apppermissions.AppPermissionDetailActivity"
+            android:label="@string/app_permissions_title" />
+        <activity
             android:name=".adb.AdbPairingTutorialActivity"
             android:label="@string/adb_pairing" />
         <activity

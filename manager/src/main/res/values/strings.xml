@@ -79,6 +79,14 @@
     <string name="home_clipboard_management_allowed">Allowed clipboard access for %1$s</string>
     <string name="home_clipboard_management_blocked">Blocked clipboard access for %1$s</string>
 
+    <!-- App Permissions Manager -->
+    <string name="app_permissions_title">App Permissions</string>
+    <string name="app_permissions_summary">Manage fine-grained permissions for any installed app</string>
+    <string name="app_permissions_shizuku_not_running">Shizuku is not running</string>
+    <string name="app_permissions_allowed">Allowed: %1$s</string>
+    <string name="app_permissions_blocked">Blocked: %1$s</string>
+    <string name="app_permissions_set_failed">Failed to change permission. Shizuku may not have sufficient privilege.</string>
+
     <!-- Home - Learn more -->
     <string name="home_learn_more_title">Learn Shizuku</string>
     <string name="home_learn_more_description">Learn how to develop with Shizuku</string>
