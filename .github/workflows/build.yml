@@ -33,27 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Create debug keystore and signing.properties
-        run: |
-          KEYSTORE_PATH="$GITHUB_WORKSPACE/debug.keystore"
-          keytool -genkeypair \
-            -keystore "$KEYSTORE_PATH" \
-            -storetype JKS \
-            -alias androiddebugkey \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -storepass android \
-            -keypass android \
-            -dname "CN=Android Debug,O=Android,C=US" \
-            -J-Dkeystore.pkcs12.legacy
-          echo "KEYSTORE_FILE=$KEYSTORE_PATH" > "$GITHUB_WORKSPACE/signing.properties"
-          echo "KEYSTORE_PASSWORD=android" >> "$GITHUB_WORKSPACE/signing.properties"
-          echo "KEYSTORE_ALIAS=androiddebugkey" >> "$GITHUB_WORKSPACE/signing.properties"
-          echo "KEYSTORE_ALIAS_PASSWORD=android" >> "$GITHUB_WORKSPACE/signing.properties"
-          echo "=== signing.properties ==="
-          cat "$GITHUB_WORKSPACE/signing.properties"
-          echo "=== keystore ==="
-          ls -la "$KEYSTORE_PATH"
+        run: bash .github/scripts/make-signing.sh
 
       - name: Build Debug APK
         run: ./gradlew :manager:assembleDebug --no-daemon
