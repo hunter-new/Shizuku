@@ -73,6 +73,12 @@
     <string name="home_app_management_view_authorized_apps"><![CDATA[Tap to manage authorized apps]]></string>
     <string name="home_app_management_empty">Apps that has requested or declared Shizuku will show here.</string>
 
+    <!-- Home - Clipboard management -->
+    <string name="home_clipboard_management_title">Clipboard management</string>
+    <string name="home_clipboard_management_summary">Tap to manage app clipboard permissions</string>
+    <string name="home_clipboard_management_allowed">Allowed clipboard access for %1$s</string>
+    <string name="home_clipboard_management_blocked">Blocked clipboard access for %1$s</string>
+
     <!-- Home - Learn more -->
     <string name="home_learn_more_title">Learn Shizuku</string>
     <string name="home_learn_more_description">Learn how to develop with Shizuku</string>
