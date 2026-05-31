@@ -101,7 +101,7 @@ class ClipboardManagementActivity : AppBarActivity() {
             val service = moe.shizuku.server.IShizukuService.Stub.asInterface(Shizuku.getBinder())
             val p = service.newProcess(arrayOf("cmd", "appops", "get", packageName, "READ_CLIPBOARD"), null, null)
             val sb = java.lang.StringBuilder()
-            (p.inputStream as java.io.InputStream).bufferedReader().use { reader ->
+            android.os.ParcelFileDescriptor.AutoCloseInputStream(p.inputStream).bufferedReader().use { reader ->
                 var line: String?
                 while (reader.readLine().also { line = it } != null) {
                     sb.append(line)

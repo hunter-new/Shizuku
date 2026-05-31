@@ -88,7 +88,8 @@ object AppPermissionsManager {
     private fun runShell(vararg command: String): String {
         val service = IShizukuService.Stub.asInterface(Shizuku.getBinder())
         val process = service.newProcess(command, null, null)
-        val output = (process.inputStream as java.io.InputStream).bufferedReader().use { it.readText() }
+        val pfd = process.inputStream
+        val output = android.os.ParcelFileDescriptor.AutoCloseInputStream(pfd).bufferedReader().use { it.readText() }
         process.waitFor()
         return output
     }
