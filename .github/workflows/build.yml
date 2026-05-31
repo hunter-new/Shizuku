@@ -32,10 +32,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Create debug keystore (legacy-compatible SHA1 MAC)
+      - name: Create debug keystore and signing.properties
         run: |
+          KEYSTORE_PATH="$GITHUB_WORKSPACE/debug.keystore"
           keytool -genkeypair \
-            -keystore debug.keystore \
+            -keystore "$KEYSTORE_PATH" \
             -storetype JKS \
             -alias androiddebugkey \
             -keyalg RSA \
@@ -45,9 +46,12 @@ jobs:
             -keypass android \
             -dname "CN=Android Debug,O=Android,C=US" \
             -J-Dkeystore.pkcs12.legacy
-          printf 'KEYSTORE_FILE=debug.keystore\nKEYSTORE_PASSWORD=androi...\n' > signing.properties
-          echo "signing.properties written:"
-          cat signing.properties
+          printf 'KEYSTORE_FILE=%s\nKEYSTORE_PASSWORD=android\nKEYSTORE_ALIAS=androiddebugkey\nKEYSTORE_ALIAS_PASSWORD=android\n' \
+            "$KEYSTORE_PATH" > "$GITHUB_WORKSPACE/signing.properties"
+          echo "=== signing.properties ==="
+          cat "$GITHUB_WORKSPACE/signing.properties"
+          echo "=== keystore ==="
+          ls -la "$KEYSTORE_PATH"
 
       - name: Build Debug APK
         run: ./gradlew :manager:assembleDebug --no-daemon
