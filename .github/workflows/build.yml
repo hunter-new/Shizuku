@@ -46,8 +46,10 @@ jobs:
             -keypass android \
             -dname "CN=Android Debug,O=Android,C=US" \
             -J-Dkeystore.pkcs12.legacy
-          printf 'KEYSTORE_FILE=%s\nKEYSTORE_PASSWORD=android\nKEYSTORE_ALIAS=androiddebugkey\nKEYSTORE_ALIAS_PASSWORD=android\n' \
-            "$KEYSTORE_PATH" > "$GITHUB_WORKSPACE/signing.properties"
+          echo "KEYSTORE_FILE=$KEYSTORE_PATH" > "$GITHUB_WORKSPACE/signing.properties"
+          echo "KEYSTORE_PASSWORD=android" >> "$GITHUB_WORKSPACE/signing.properties"
+          echo "KEYSTORE_ALIAS=androiddebugkey" >> "$GITHUB_WORKSPACE/signing.properties"
+          echo "KEYSTORE_ALIAS_PASSWORD=android" >> "$GITHUB_WORKSPACE/signing.properties"
           echo "=== signing.properties ==="
           cat "$GITHUB_WORKSPACE/signing.properties"
           echo "=== keystore ==="
