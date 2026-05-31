@@ -24,22 +24,33 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Accept Android SDK licenses and install NDK
+        run: |
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate debug keystore and signing config
+      - name: Create signing config (use Android debug keystore)
         run: |
-          keytool -genkeypair -v \
-            -keystore key.jks \
-            -storetype JKS \
-            -alias debug \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 365 \
-            -storepass android \
-            -keypass android \
-            -dname "CN=Debug, O=Debug, C=US"
-          printf 'KEYSTORE_FILE=key.jks\nKEYSTORE_PASSWORD=androi...\n' > signing.properties
+          # Ensure the default Android debug keystore exists
+          mkdir -p ~/.android
+          if [ ! -f ~/.android/debug.keystore ]; then
+            keytool -genkeypair \
+              -keystore ~/.android/debug.keystore \
+              -storetype JKS \
+              -alias androiddebugkey \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass android \
+              -keypass android \
+              -dname "CN=Android Debug,O=Android,C=US" \
+              -J-Dkeystore.pkcs12.legacy
+          fi
+          printf 'KEYSTORE_FILE=%s\nKEYSTORE_PASSWORD=android\nKEYSTORE_ALIAS=androiddebugkey\nKEYSTORE_ALIAS_PASSWORD=android\n' \
+            "$HOME/.android/debug.keystore" > signing.properties
 
       - name: Build Debug APK
         run: ./gradlew :manager:assembleDebug --no-daemon
