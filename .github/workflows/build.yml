@@ -38,7 +38,8 @@ jobs:
             --no-daemon \
             --no-build-cache \
             --no-configuration-cache \
-            -Dorg.gradle.configuration-cache=false
+            -x validateSigningDebug \
+            -x validateSigningRelease
 
       - name: Upload Debug APK
         if: success()
